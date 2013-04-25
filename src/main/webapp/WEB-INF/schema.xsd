@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.geworkbench.org/service/viper"
+        xmlns:tns="http://www.geworkbench.org/service/viper"
+        xmlns:xmime="http://www.w3.org/2005/05/xmlmime" elementFormDefault="qualified">
+
+    <element name="ExecuteViperRequest" type="tns:ViperInput"/>
+
+    <element name="ExecuteViperResponse" type="tns:ViperOutput"/>
+
+    <complexType name="ViperInput">
+        <sequence>
+            <element name="name" type="string"/>
+            <element name="expfile" type="base64Binary" xmime:expectedContentTypes="application/octet-stream"/>
+            <element name="regulon" type="string"/>
+            <element name="regtype" type="string"/>
+            <element name="method" type="string"/>
+            <element name="rlibpath" type="string"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="ViperOutput">
+        <sequence>
+            <element name="log" type="string"/>
+            <element name="outfile" type="base64Binary" xmime:expectedContentTypes="application/octet-stream"/>
+        </sequence>
+    </complexType>
+
+</schema>

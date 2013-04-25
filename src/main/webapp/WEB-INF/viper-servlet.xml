@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+    <bean id="viperInputRepository" class="org.geworkbench.service.viper.service.StubViperInputRepository"/>
+
+    <bean class="org.geworkbench.service.viper.ws.ViperInputRepositoryEndpoint">
+        <constructor-arg ref="viperInputRepository"/>
+    </bean>
+
+    <bean class="org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping"/>
+
+    <bean id="defaultMethodEndpointAdapter" class="org.springframework.ws.server.endpoint.adapter.DefaultMethodEndpointAdapter">
+        <property name="methodArgumentResolvers" ref="methodProcessor"/>
+        <property name="methodReturnValueHandlers" ref="methodProcessor"/>
+    </bean>
+
+    <bean id="methodProcessor" class="org.springframework.ws.server.endpoint.adapter.method.MarshallingPayloadMethodProcessor">
+        <constructor-arg ref="marshaller"/>
+    </bean>
+
+    <bean id="marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="contextPath" value="org.geworkbench.service.viper.schema"/>
+        <property name="mtomEnabled" value="true"/>
+    </bean>
+
+    <bean id="viper" class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition">
+        <property name="schema" ref="schema"/>
+        <property name="portTypeName" value="viperInputRepository"/>
+        <property name="locationUri" value="http://localhost:8080/viper-server/"/>
+    </bean>
+
+    <bean id="schema" class="org.springframework.xml.xsd.SimpleXsdSchema">
+        <property name="xsd" value="/WEB-INF/schema.xsd"/>
+    </bean>
+
+</beans>
