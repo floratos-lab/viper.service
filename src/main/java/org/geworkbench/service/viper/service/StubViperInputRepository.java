@@ -27,7 +27,7 @@ public class StubViperInputRepository implements ViperInputRepository {
     
     private static final String VIPERROOT = "/ifs/data/c2b2/af_lab/cagrid/r/viper/runs/";
 	private static final String scriptDir = "/ifs/data/c2b2/af_lab/cagrid/r/viper/scripts/";
-	private static final String rscript   = "/nfs/apps/R/2.14.0/bin/Rscript";
+	private static final String rscript   = "/nfs/apps/R/3.0.1/bin/Rscript";
 	private static final String account   = "cagrid";
 	private static final String submitSh  = "viper_submit.sh";
 	private static final String viperR    = "viper_starter.r";
@@ -178,6 +178,7 @@ public class StubViperInputRepository implements ViperInputRepository {
 			brErr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 			String line = null;
 			while ((line = brIn.readLine())!=null || (line = brErr.readLine())!=null){
+				if(line.startsWith("error")) return false; //cluster scheduler error
 				String[] toks = line.trim().split("\\s+");
 				if (toks.length > 3 && toks[2].equals(runid))
 					return false;
